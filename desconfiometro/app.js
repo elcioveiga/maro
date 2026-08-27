@@ -1,10 +1,8 @@
-/* ---------------- STATE ---------------- */
 let state = {
   score:0,
-  answered:{},        // challengeId -> true (already scored)
-  levelsDone:{},       // levelId -> true
-  badges:{},            // badgeId -> true
-  usedVerify:false
+  answered:{},
+  levelsDone:{},
+  badges:{}
 };
 const STORAGE_KEY = 'desconfiometro-progress-v1';
 
@@ -17,7 +15,7 @@ async function loadState(){
       const value = window.localStorage.getItem(STORAGE_KEY);
       if(value){ state = Object.assign(state, JSON.parse(value)); }
     }
-  }catch(e){ /* no saved progress yet, or storage unavailable */ }
+  }catch(e){ }
   renderAll();
 }
 async function saveState(){
@@ -26,10 +24,9 @@ async function saveState(){
     if(window.storage) await window.storage.set(STORAGE_KEY, value);
     else window.localStorage.setItem(STORAGE_KEY, value);
   }
-  catch(e){ /* saving failed, continue silently */ }
+  catch(e){ }
 }
 
-/* ---------------- NAV ---------------- */
 document.querySelectorAll('nav.tabs button').forEach(b=>{
   b.addEventListener('click', ()=>goTo(b.dataset.view));
 });
@@ -41,7 +38,6 @@ function goTo(name){
   if(name==='progresso') renderProgress();
 }
 
-/* ---------------- APRENDER: tips ---------------- */
 const TIPS = [
   {ic:'🔎', t:'Verifique a fonte', d:'Quem publicou isso? Um veículo conhecido, um perfil anônimo, uma corrente encaminhada?'},
   {ic:'📅', t:'Confira a data', d:'Fotos e notícias antigas voltam a circular como se fossem de hoje. Sempre olhe quando foi publicado.'},
@@ -60,7 +56,6 @@ function renderTips(){
     </div>`).join('');
 }
 
-/* ---------------- DESAFIOS: data ---------------- */
 const LEVELS = [
   {id:'l1', num:1, name:'Aprendendo a desconfiar', icon:'🟢'},
   {id:'l2', num:2, name:'Detetive da informação', icon:'🟡'},
@@ -129,7 +124,7 @@ const CHALLENGES = {
   l3:[
     {id:'l3-1', type:'order',
       prompt:'Coloque as etapas da investigação na ordem correta (clique na sequência certa).',
-      steps:['Receber informação','Verificar fonte','Conferir data','Procurar outras fontes','Analisar o contexto','Decidir se deve compartilhar'],
+      steps:['Receber informação','Analisar o contexto','Verificar fonte','Conferir data','Procurar outras fontes','Decidir se deve compartilhar'],
       points:20},
     {id:'l3-2', type:'mcq',
       prompt:'Uma foto de uma manifestação lotada está sendo usada com a legenda "Multidão protesta HOJE contra nova lei". Ao pesquisar a imagem, você descobre que ela é de um evento esportivo, em outro país, de anos atrás. O que isso significa?',
@@ -196,7 +191,6 @@ const BADGES = [
   {id:'b1', ic:'🏅', name:'Primeira verificação', check:s=>Object.keys(s.answered).length>=1},
   {id:'b2', ic:'🔎', name:'Detetive de fontes', check:s=>s.levelsDone['l2']},
   {id:'b3', ic:'📰', name:'Caçador de títulos', check:s=>s.answered['l1-3']},
-  {id:'b4', ic:'🛡️', name:'Verificador digital', check:s=>s.usedVerify},
   {id:'b5', ic:'🏆', name:'Mestre da verificação', check:s=>s.levelsDone['l4'] && s.levelsDone['l5']}
 ];
 
@@ -408,101 +402,10 @@ function checkBadges(){
   BADGES.forEach(b=>{ if(!state.badges[b.id] && b.check(state)) state.badges[b.id]=true; });
 }
 
-/* ---------------- VERIFICAR (análise via API da Anthropic) ---------------- */
-const VERIFY_SYSTEM_PROMPT = `Você é o motor de análise do Desconfiômetro, uma ferramenta educativa de checagem de informação.
-Sua tarefa: ler o texto que o usuário colar e apontar SINAIS LINGUÍSTICOS de possível desinformação — nunca afirme se o fato em si é verdadeiro ou falso, pois isso não pode ser determinado só pelo texto.
-Responda APENAS com um objeto JSON válido, sem markdown, sem texto antes ou depois, exatamente neste formato:
-{
-  "fonte_citada": boolean,
-  "fonte_coment": "comentário curto, até 12 palavras",
-  "data_presente": boolean,
-  "data_coment": "comentário curto, até 12 palavras",
-  "titulo_sem_exagero": boolean,
-  "titulo_coment": "comentário curto, até 12 palavras",
-  "sem_pedido_compartilhamento": boolean,
-  "compart_coment": "comentário curto, até 12 palavras",
-  "tom_equilibrado": boolean,
-  "tom_coment": "comentário curto, até 12 palavras",
-  "sinais_alerta": ["até 5 sinais encontrados, strings curtas"],
-  "resumo": "2 a 3 frases, tom cauteloso, nunca afirmando que é verdadeiro ou falso",
-  "nivel_atencao": "baixo" | "moderado" | "alto"
-}`;
-
-async function callVerifyAPI(text){
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1000,
-      system: VERIFY_SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `Texto para analisar:\n\n${text}` }]
-    })
-  });
-  const data = await response.json();
-  const textBlock = (data.content || []).find(b => b.type === 'text');
-  if(!textBlock) throw new Error('Resposta vazia da API');
-  const clean = textBlock.text.replace(/```json|```/g, '').trim();
-  return JSON.parse(clean);
-}
-
-async function runChecklist(){
-  const txt = document.getElementById('verify-input').value.trim();
-  if(!txt) return;
-
-  const btn = document.getElementById('verify-btn');
-  const loading = document.getElementById('verify-loading');
-  const errBox = document.getElementById('verify-error');
-  const checklist = document.getElementById('verify-checklist');
-  const result = document.getElementById('verify-result');
-
-  btn.setAttribute('disabled','true');
-  loading.classList.add('show');
-  errBox.classList.remove('show');
-  checklist.classList.remove('show');
-  result.classList.remove('show');
-
-  try{
-    const a = await callVerifyAPI(txt);
-    fillCheckRow('fonte', a.fonte_citada, a.fonte_coment);
-    fillCheckRow('data', a.data_presente, a.data_coment);
-    fillCheckRow('titulo', a.titulo_sem_exagero, a.titulo_coment);
-    fillCheckRow('compart', a.sem_pedido_compartilhamento, a.compart_coment);
-    fillCheckRow('tom', a.tom_equilibrado, a.tom_coment);
-    checklist.classList.add('show');
-
-    const nivelClasse = { baixo:'nivel-baixo', moderado:'nivel-moderado', alto:'nivel-alto' }[a.nivel_atencao] || 'nivel-moderado';
-    const tags = (a.sinais_alerta||[]).map(s=>`<span>${s}</span>`).join('') || '<span>Nenhum sinal evidente encontrado</span>';
-    result.innerHTML = `
-      <div class="nivel-badge ${nivelClasse}">Nível de atenção sugerido: ${a.nivel_atencao || 'moderado'}</div>
-      <div class="tag-row">${tags}</div>
-      <p style="margin:8px 0 0;">${a.resumo || ''}</p>`;
-    result.classList.add('show');
-
-    state.usedVerify = true;
-    checkBadges();
-    saveState();
-  }catch(e){
-    errBox.innerHTML = '⚠️ Não foi possível concluir a análise agora. Tente novamente em instantes.';
-    errBox.classList.add('show');
-  }finally{
-    loading.classList.remove('show');
-    btn.removeAttribute('disabled');
-  }
-}
-
-function fillCheckRow(key, ok, comment){
-  const box = document.getElementById('box-'+key);
-  box.classList.remove('on','off');
-  box.classList.add(ok ? 'on' : 'off');
-  document.getElementById('c-'+key).textContent = comment || '';
-}
-
-/* ---------------- PROGRESSO ---------------- */
 function renderProgress(){
   document.getElementById('stat-score').textContent = state.score;
   document.getElementById('stat-levels').textContent = Object.keys(state.levelsDone).length + '/5';
-  document.getElementById('stat-badges').textContent = Object.keys(state.badges).length + '/5';
+  document.getElementById('stat-badges').textContent = Object.keys(state.badges).length + '/4';
 
   const maxScore = Object.values(CHALLENGES).flat().reduce((s,c)=>s+c.points,0) + 20*5;
   const pct = Math.min(100, Math.round((state.score/maxScore)*100));
@@ -525,7 +428,7 @@ function renderProgress(){
 }
 
 async function resetProgress(){
-  state = {score:0, answered:{}, levelsDone:{}, badges:{}, usedVerify:false};
+  state = {score:0, answered:{}, levelsDone:{}, badges:{}};
   await saveState();
   renderAll();
   renderProgress();

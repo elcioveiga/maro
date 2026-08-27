@@ -17,7 +17,7 @@
     <button data-view="inicio" class="active">🏠 Início</button>
     <button data-view="aprender">📚 Aprender</button>
     <button data-view="desafios">🎯 Desafios</button>
-    <button data-view="verificar">🔎 Verificar</button>
+    <button data-view="fontes">🔗 Fontes</button>
     <button data-view="progresso">🏆 Progresso</button>
   </nav>
 </div>
@@ -54,7 +54,7 @@
       <div class="card-grid">
         <div class="opt-card" onclick="goTo('aprender')"><span class="pin">📌</span><span class="ic">📚</span><b>Aprenda a identificar</b><span class="d">7 sinais para observar antes de confiar numa informação.</span></div>
         <div class="opt-card" onclick="goTo('desafios')"><span class="pin">📌</span><span class="ic">🎯</span><b>Desafios</b><span class="d">5 níveis, do iniciante ao mestre da verificação.</span></div>
-        <div class="opt-card" onclick="goTo('verificar')"><span class="pin">📌</span><span class="ic">🔎</span><b>Verificar informação</b><span class="d">Cole um título ou texto e receba um checklist.</span></div>
+        <div class="opt-card" onclick="goTo('fontes')"><span class="pin">📌</span><span class="ic">🔗</span><b>Fontes confiáveis</b><span class="d">Sites para consultar e comparar notícias suspeitas.</span></div>
         <div class="opt-card" onclick="goTo('progresso')"><span class="pin">📌</span><span class="ic">🏆</span><b>Meu progresso</b><span class="d">Pontuação, conquistas e seu nível de atenção atual.</span></div>
       </div>
     </div>
@@ -101,6 +101,27 @@
     </ul>
   </section>
 
+  <section class="view" id="view-fontes">
+    <span class="eyebrow">Pesquisa responsável</span>
+    <h2>Fontes para conferir notícias</h2>
+    <p>Use sites especializados para procurar a informação original e comparar as evidências antes de compartilhar.</p>
+    <div class="sources-grid">
+      <a class="source-card" href="https://www.aosfatos.org/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">🔎</span><b>Aos Fatos</b><span>Agência de checagem de fatos e investigação.</span><strong>Abrir site ↗</strong>
+      </a>
+      <a class="source-card" href="https://lupa.uol.com.br/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">📰</span><b>Agência Lupa</b><span>Verificações de discursos, notícias e conteúdos virais.</span><strong>Abrir site ↗</strong>
+      </a>
+      <a class="source-card" href="https://projetocomprova.com.br/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">🤝</span><b>Projeto Comprova</b><span>Jornalistas de vários veículos investigando conteúdos suspeitos.</span><strong>Abrir site ↗</strong>
+      </a>
+      <a class="source-card" href="https://g1.globo.com/fato-ou-fake/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">✅</span><b>Fato ou Fake</b><span>Checagens e explicações sobre informações que circulam na internet.</span><strong>Abrir site ↗</strong>
+      </a>
+    </div>
+    <div class="sources-note">Nenhuma fonte deve ser seguida cegamente: confira a data, leia a explicação e compare com outras fontes confiáveis.</div>
+  </section>
+
   <section class="view" id="view-desafios">
     <span class="eyebrow">Mapa da investigação</span>
     <h2>Escolha um nível</h2>
@@ -120,33 +141,6 @@
     <div class="challenge-panel" id="challenge-panel"></div>
   </section>
 
-  <section class="view" id="view-verificar">
-    <span class="eyebrow">Ferramenta · análise por IA</span>
-    <h2>Verificar informação</h2>
-    <p>Cole o título ou o texto de uma notícia. A IA lê o texto e aponta <b>sinais linguísticos</b> de possível desinformação — ela não confirma nem nega se algo é verdadeiro, isso exige checar a fonte, a data e outras publicações fora daqui.</p>
-    <div class="verify-box">
-      <textarea id="verify-input" placeholder="Ex: Cientistas descobrem cura milagrosa que a mídia esconde..."></textarea>
-      <div class="cta-row" style="margin-top:14px;">
-        <button class="btn small" id="verify-btn" onclick="runChecklist()">Analisar com IA</button>
-      </div>
-
-      <div class="verify-loading" id="verify-loading">🔎 Analisando o texto…</div>
-      <div class="verify-error" id="verify-error"></div>
-
-      <div class="checklist" id="verify-checklist">
-        <div class="check-row" data-k="fonte"><div class="box" id="box-fonte"></div><div class="lbl">🔎 <b>Fonte citada no texto</b><div class="ai-comment" id="c-fonte"></div></div></div>
-        <div class="check-row" data-k="data"><div class="box" id="box-data"></div><div class="lbl">📅 <b>Data presente</b><div class="ai-comment" id="c-data"></div></div></div>
-        <div class="check-row" data-k="titulo"><div class="box" id="box-titulo"></div><div class="lbl">📰 <b>Título sem exageros</b><div class="ai-comment" id="c-titulo"></div></div></div>
-        <div class="check-row" data-k="compart"><div class="box" id="box-compart"></div><div class="lbl">🤫 <b>Sem pedido de compartilhamento urgente</b><div class="ai-comment" id="c-compart"></div></div></div>
-        <div class="check-row" data-k="tom"><div class="box" id="box-tom"></div><div class="lbl">🌡️ <b>Tom equilibrado, sem apelo emocional forte</b><div class="ai-comment" id="c-tom"></div></div></div>
-      </div>
-
-      <div class="ai-note">🔗 <b>Outras fontes</b> e 🖼️ <b>contexto da imagem</b> não podem ser checados só pelo texto colado — isso ainda depende de você pesquisar em outros lugares.</div>
-
-      <div class="verify-result" id="verify-result"></div>
-    </div>
-  </section>
-
   <section class="view" id="view-progresso">
     <span class="eyebrow">Seu relatório</span>
     <h2>Meu progresso</h2>
@@ -155,7 +149,7 @@
         <div class="stat-row">
           <div class="stat"><div class="v" id="stat-score">0</div><div class="l">Pontos</div></div>
           <div class="stat"><div class="v" id="stat-levels">0/5</div><div class="l">Níveis</div></div>
-          <div class="stat"><div class="v" id="stat-badges">0/5</div><div class="l">Conquistas</div></div>
+          <div class="stat"><div class="v" id="stat-badges">0/4</div><div class="l">Conquistas</div></div>
         </div>
         <p id="progress-msg" style="margin-top:16px;"></p>
       </div>
