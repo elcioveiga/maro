@@ -69,9 +69,8 @@ const CHALLENGES = {
     {id:'l1-1', type:'mcq',
       prompt:'"Cientistas descobrem que tomar suco de limão cura QUALQUER doença em 24 horas!" — como você classificaria essa informação?',
       options:['Verdadeira, pode compartilhar','Falsa, com certeza','Precisa ser verificada antes de qualquer coisa'],
-      correct:1, points:10,
-      exp:'A afirmação é falsa: promessas absolu tas como 'cura QUALQUER doença em 24 horas' sem evidência ou fonte confiável são enganosas. Procure estudos, autoria e confirmação de especialistas antes de acreditar.'},
-    {id:'l1-2', type:'signals',
+      correct:2, points:10,
+      exp:'Promessas absolutas ("cura qualquer doença") e ausência de fonte são sinais de alerta. Isso não prova que é falsa — mas exige verificação antes de acreditar ou compartilhar.'},
       prompt:'Clique nos trechos suspeitos deste post.',
       post:{headline:'URGENTE!!! Prefeitura vai cortar água da cidade inteira amanhã, ninguém está avisando!', meta:'Postado por @cidadao_alerta_2024 · compartilhe antes que apaguem'},
       flags:[
