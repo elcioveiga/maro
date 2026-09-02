@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desconfiômetro</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg class="dial" viewBox="0 0 40 40"><path d="M4 32 A16 16 0 0 1 36 32" fill="none" stroke="#1C2333" stroke-width="3"/><path d="M4 32 A16 16 0 0 1 14 17" fill="none" stroke="#3E6B4F" stroke-width="3"/><path d="M14 17 A16 16 0 0 1 26 17" fill="none" stroke="#C98A2C" stroke-width="3"/><path d="M26 17 A16 16 0 0 1 36 32" fill="none" stroke="#B23A2E" stroke-width="3"/><line x1="20" y1="32" x2="29" y2="21" stroke="#1C2333" stroke-width="2.5" stroke-linecap="round"/><circle cx="20" cy="32" r="2.5" fill="#1C2333"/></svg>
+    Desconfiômetro
+  </div>
+  <nav class="tabs">
+    <button data-view="inicio" class="active">🏠 Início</button>
+    <button data-view="aprender">📚 Aprender</button>
+    <button data-view="desafios">🎯 Desafios</button>
+    <button data-view="fontes">🔗 Fontes</button>
+    <button data-view="progresso">🏆 Progresso</button>
+  </nav>
+</div>
+
+<main>
+
+  <section class="view active" id="view-inicio">
+    <div class="hero">
+      <div>
+        <span class="eyebrow">Boletim de investigação</span>
+        <h1>Antes de acreditar, <span>desconfie</span>.</h1>
+        <p class="lede">Notícias falsas se espalham rápido porque a gente acredita rápido. O Desconfiômetro treina seu olhar de investigador: fonte, data, contexto — em desafios curtos, com pontuação e conquistas.</p>
+        <div class="cta-row">
+          <button class="btn" onclick="goTo('desafios')">Começar a investigar</button>
+          <button class="btn ghost" onclick="goTo('aprender')">Aprender o básico</button>
+        </div>
+      </div>
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 200 120" width="220">
+          <path d="M20 110 A80 80 0 0 1 76 36" fill="none" stroke="#3E6B4F" stroke-width="16"/>
+          <path d="M76 36 A80 80 0 0 1 124 36" fill="none" stroke="#C98A2C" stroke-width="16"/>
+          <path d="M124 36 A80 80 0 0 1 180 110" fill="none" stroke="#B23A2E" stroke-width="16"/>
+          <g id="home-needle" style="transform-origin:100px 110px; transform:rotate(-35deg);">
+            <line x1="100" y1="110" x2="100" y2="45" stroke="#1C2333" stroke-width="4" stroke-linecap="round"/>
+          </g>
+          <circle cx="100" cy="110" r="7" fill="#1C2333"/>
+        </svg>
+        <div class="gauge-caption">Seu nível de atenção começa aqui.<br>Complete desafios para calibrar.</div>
+      </div>
+    </div>
+
+    <div class="board">
+      <h3 style="margin-top:6px;">Por onde quer começar?</h3>
+      <div class="card-grid">
+        <div class="opt-card" onclick="goTo('aprender')"><span class="pin">📌</span><span class="ic">📚</span><b>Aprenda a identificar</b><span class="d">7 sinais para observar antes de confiar numa informação.</span></div>
+        <div class="opt-card" onclick="goTo('desafios')"><span class="pin">📌</span><span class="ic">🎯</span><b>Desafios</b><span class="d">5 níveis, do iniciante ao mestre da verificação.</span></div>
+        <div class="opt-card" onclick="goTo('fontes')"><span class="pin">📌</span><span class="ic">🔗</span><b>Fontes confiáveis</b><span class="d">Sites para consultar e comparar notícias suspeitas.</span></div>
+        <div class="opt-card" onclick="goTo('progresso')"><span class="pin">📌</span><span class="ic">🏆</span><b>Meu progresso</b><span class="d">Pontuação, conquistas e seu nível de atenção atual.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-aprender">
+    <span class="eyebrow">Antes de investigar</span>
+    <h2>7 hábitos de quem não cai em fake news</h2>
+    <p>Nenhuma notícia deve ser descartada só porque parece estranha — o objetivo é <b>verificar</b>, não desconfiar de tudo. Toque em cada cartão para abrir.</p>
+    <div class="tips-grid" id="tips-grid"></div>
+
+    <h3>Como a desinformação se espalha</h3>
+    <div class="flow bad">
+      <div class="step">🧪 Informação falsa é criada</div><div class="arrow">↓</div>
+      <div class="step">🌐 É publicada na internet</div><div class="arrow">↓</div>
+      <div class="step">👀 Chama a atenção das pessoas</div><div class="arrow">↓</div>
+      <div class="step">🤝 Uma pessoa acredita</div><div class="arrow">↓</div>
+      <div class="step">📤 Compartilha sem verificar</div><div class="arrow">↓</div>
+      <div class="step">🔴 A desinformação se espalha</div>
+    </div>
+
+    <h3>Como o Desconfiômetro interrompe o ciclo</h3>
+    <div class="flow good">
+      <div class="step">📥 Receber informação</div><div class="arrow">↓</div>
+      <div class="step">🛑 Parar antes de compartilhar</div><div class="arrow">↓</div>
+      <div class="step">🔎 Verificar a fonte</div><div class="arrow">↓</div>
+      <div class="step">📅 Conferir a data</div><div class="arrow">↓</div>
+      <div class="step">🔗 Comparar com outras fontes</div><div class="arrow">↓</div>
+      <div class="step">🛡️ Tomar uma decisão consciente</div>
+    </div>
+
+    <h3>A regra de ouro</h3>
+    <div class="rule-strip">
+      <span>PARE</span><span>VERIFIQUE</span><span>COMPARE</span><span>PENSE</span><span>COMPARTILHE</span>
+    </div>
+
+    <h3>Quem pode sair prejudicado</h3>
+    <ul class="risk-list">
+      <li>Pessoas que acreditam na informação falsa</li>
+      <li>Pessoas ou grupos falsamente acusados</li>
+      <li>Instituições e comunidades inteiras</li>
+      <li>A própria credibilidade de quem compartilha</li>
+      <li>Decisões tomadas com base em dados incorretos</li>
+    </ul>
+  </section>
+
+  <section class="view" id="view-fontes">
+    <span class="eyebrow">Pesquisa responsável</span>
+    <h2>Fontes para conferir notícias</h2>
+    <p>Use sites especializados para procurar a informação original e comparar as evidências antes de compartilhar.</p>
+    <div class="sources-grid">
+      <a class="source-card" href="https://www.aosfatos.org/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">🔎</span><b>Aos Fatos</b><span>Agência de checagem de fatos e investigação.</span><strong>Abrir site ↗</strong>
+      </a>
+      <a class="source-card" href="https://lupa.uol.com.br/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">📰</span><b>Agência Lupa</b><span>Verificações de discursos, notícias e conteúdos virais.</span><strong>Abrir site ↗</strong>
+      </a>
+      <a class="source-card" href="https://projetocomprova.com.br/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">🤝</span><b>Projeto Comprova</b><span>Jornalistas de vários veículos investigando conteúdos suspeitos.</span><strong>Abrir site ↗</strong>
+      </a>
+      <a class="source-card" href="https://g1.globo.com/fato-ou-fake/" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">✅</span><b>Fato ou Fake</b><span>Checagens e explicações sobre informações que circulam na internet.</span><strong>Abrir site ↗</strong>
+      </a>
+    </div>
+    <div class="sources-note">Nenhuma fonte deve ser seguida cegamente: confira a data, leia a explicação e compare com outras fontes confiáveis.</div>
+  </section>
+
+  <section class="view" id="view-desafios">
+    <span class="eyebrow">Mapa da investigação</span>
+    <h2>Escolha um nível</h2>
+    <p>Cada nível exige mais atenção que o anterior. Complete os casos para ganhar pontos e desbloquear conquistas.</p>
+
+    <div class="level-path">
+      <div class="level-track" id="level-track"></div>
+      <div class="level-labels">
+        <span>Aprendendo<br>a desconfiar</span>
+        <span>Detetive da<br>informação</span>
+        <span>Investigador</span>
+        <span>Mestre da<br>verificação</span>
+        <span>Desafio<br>final</span>
+      </div>
+    </div>
+
+    <div class="challenge-panel" id="challenge-panel"></div>
+  </section>
+
+  <section class="view" id="view-progresso">
+    <span class="eyebrow">Seu relatório</span>
+    <h2>Meu progresso</h2>
+    <div class="progress-top">
+      <div>
+        <div class="stat-row">
+          <div class="stat"><div class="v" id="stat-score">0</div><div class="l">Pontos</div></div>
+          <div class="stat"><div class="v" id="stat-levels">0/5</div><div class="l">Níveis</div></div>
+          <div class="stat"><div class="v" id="stat-badges">0/4</div><div class="l">Conquistas</div></div>
+        </div>
+        <p id="progress-msg" style="margin-top:16px;"></p>
+      </div>
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 200 120" width="220">
+          <path d="M20 110 A80 80 0 0 1 76 36" fill="none" stroke="#3E6B4F" stroke-width="16"/>
+          <path d="M76 36 A80 80 0 0 1 124 36" fill="none" stroke="#C98A2C" stroke-width="16"/>
+          <path d="M124 36 A80 80 0 0 1 180 110" fill="none" stroke="#B23A2E" stroke-width="16"/>
+          <g id="prog-needle" style="transform-origin:100px 110px; transform:rotate(-90deg); transition:transform .6s ease;">
+            <line x1="100" y1="110" x2="100" y2="45" stroke="#1C2333" stroke-width="4" stroke-linecap="round"/>
+          </g>
+          <circle cx="100" cy="110" r="7" fill="#1C2333"/>
+        </svg>
+        <div class="gauge-caption" id="prog-caption">Nível de atenção: 0/100</div>
+      </div>
+    </div>
+
+    <h3>Conquistas</h3>
+    <div class="badge-grid" id="badge-grid"></div>
+    <div class="cta-row" style="margin-top:20px;">
+      <button class="btn ghost small" onclick="resetProgress()">Reiniciar progresso</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>DESCONFIÔMETRO — PROTÓTIPO EDUCATIVO · CASO ENCERRADO QUANDO VOCÊ DECIDE, NÃO QUANDO VOCÊ COMPARTILHA</footer>
+
+<script src="app.js"></script>
