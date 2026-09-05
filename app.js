@@ -232,7 +232,16 @@ function renderChallenge(){
     body = `
       <div class="chal-prompt">${c.prompt}</div>
       <div class="mock-post">
+        <div class="news-topline">
+          <span class="news-brand">notícia<span>agora</span></span>
+          <span class="news-live">Ao vivo</span>
+        </div>
+        <div class="news-nav">Brasil&nbsp;&nbsp;|&nbsp;&nbsp;Cotidiano&nbsp;&nbsp;|&nbsp;&nbsp;Saúde&nbsp;&nbsp;|&nbsp;&nbsp;Política&nbsp;&nbsp;|&nbsp;&nbsp;Economia</div>
+        <div class="news-section">Cotidiano</div>
         <div class="headline">${c.post.headline}</div>
+        <div class="news-subheadline">Mensagem alerta moradores, mas não apresenta fonte oficial nem confirmação das autoridades.</div>
+        <div class="news-image"><span>Imagem ilustrativa</span></div>
+        <div class="news-caption">Conteúdo compartilhado nas redes sociais; verifique a origem antes de acreditar.</div>
         <div class="meta">${c.post.meta}</div>
       </div>
       <div class="sig-list" id="siglist-${c.id}">

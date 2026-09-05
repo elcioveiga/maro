@@ -18,6 +18,7 @@
     <button data-view="aprender">📚 Aprender</button>
     <button data-view="desafios">🎯 Desafios</button>
     <button data-view="fontes">🔗 Fontes</button>
+    <button data-view="casos">🗂️ Casos Reais</button>
     <button data-view="progresso">🏆 Progresso</button>
   </nav>
 </div>
@@ -55,6 +56,7 @@
         <div class="opt-card" onclick="goTo('aprender')"><span class="pin">📌</span><span class="ic">📚</span><b>Aprenda a identificar</b><span class="d">7 sinais para observar antes de confiar numa informação.</span></div>
         <div class="opt-card" onclick="goTo('desafios')"><span class="pin">📌</span><span class="ic">🎯</span><b>Desafios</b><span class="d">5 níveis, do iniciante ao mestre da verificação.</span></div>
         <div class="opt-card" onclick="goTo('fontes')"><span class="pin">📌</span><span class="ic">🔗</span><b>Fontes confiáveis</b><span class="d">Sites para consultar e comparar notícias suspeitas.</span></div>
+        <div class="opt-card" onclick="goTo('casos')"><span class="pin">📌</span><span class="ic">🗂️</span><b>Casos reais</b><span class="d">Histórias verídicas de desinformação e o impacto que causaram.</span></div>
         <div class="opt-card" onclick="goTo('progresso')"><span class="pin">📌</span><span class="ic">🏆</span><b>Meu progresso</b><span class="d">Pontuação, conquistas e seu nível de atenção atual.</span></div>
       </div>
     </div>
@@ -139,6 +141,42 @@
     </div>
 
     <div class="challenge-panel" id="challenge-panel"></div>
+  </section>
+
+  <section class="view" id="view-casos">
+    <span class="eyebrow">Arquivo de casos reais</span>
+    <h2>Quando a desinformação sai da tela</h2>
+    <p>Estes casos aconteceram de verdade. Cada um mostra como uma informação falsa, espalhada sem verificação, teve consequências fora da internet.</p>
+
+    <div class="case-file">
+      <div class="case-tag">🇧🇷 Guarujá, SP, Brasil — 2014</div>
+      <h3>Um boato nas redes que terminou em tragédia</h3>
+      <div class="case-field"><b>O que aconteceu</b>Uma página local no Facebook publicou um retrato falado, atribuindo-o a uma suposta mulher que sequestrava crianças para rituais. Fabiane Maria de Jesus, uma dona de casa de 33 anos, foi confundida com a pessoa do boato.</div>
+      <div class="case-field impact"><b>Impacto real</b>Ela foi agredida por moradores do bairro e morreu dias depois. A publicação foi apagada poucas horas após ser feita, mas o boato já havia se espalhado — mostrando como uma mentira viraliza muito mais rápido do que sua correção.</div>
+    </div>
+
+    <div class="case-file">
+      <div class="case-tag">🇮🇳 Índia — 2018</div>
+      <h3>Correntes de WhatsApp e uma onda de linchamentos</h3>
+      <div class="case-field"><b>O que aconteceu</b>Mensagens anônimas alertando sobre supostas gangues de sequestradores de crianças circularam em grupos de WhatsApp em vários estados do país.</div>
+      <div class="case-field impact"><b>Impacto real</b>Dezenas de pessoas inocentes foram espancadas até a morte por multidões que acreditaram nos boatos, incluindo trabalhadores e viajantes confundidos com criminosos. O caso levou o WhatsApp a veicular campanhas de combate à desinformação no país.</div>
+    </div>
+
+    <div class="case-file">
+      <div class="case-tag">🇺🇸 Washington, EUA — 2016</div>
+      <h3>Uma teoria da conspiração vira tiroteio ("Pizzagate")</h3>
+      <div class="case-field"><b>O que aconteceu</b>E-mails vazados de um assessor de campanha foram distorcidos online, dando origem à teoria falsa de que uma pizzaria de Washington escondia uma rede de exploração infantil.</div>
+      <div class="case-field impact"><b>Impacto real</b>Um homem viajou de outro estado, entrou armado no restaurante e atirou para "investigar" a história por conta própria. Ninguém ficou ferido, mas ele foi condenado a 4 anos de prisão, e o dono do restaurante recebeu ameaças por meses.</div>
+    </div>
+
+    <div class="case-file">
+      <div class="case-tag">🇧🇷 Brasil — pandemia de Covid-19</div>
+      <h3>O "kit covid" e a ciência ignorada</h3>
+      <div class="case-field"><b>O que aconteceu</b>Remédios sem eficácia comprovada contra a covid-19, como a cloroquina, foram promovidos publicamente como tratamento, mesmo com estudos e órgãos de saúde alertando contra o uso.</div>
+      <div class="case-field impact"><b>Impacto real</b>Documentos apresentados à CPI da Covid, no Senado, indicaram que o governo federal agiu mais rápido para comprar remédios sem eficácia comprovada do que para negociar vacinas, durante uma pandemia que já somava centenas de milhares de mortes no país.</div>
+    </div>
+
+    <div class="sources-note">Casos reais como esses mostram por que os hábitos da aba "Aprender" e os desafios do Desconfiômetro importam — desinformação não é um jogo, mesmo quando aprendemos a identificá-la jogando.</div>
   </section>
 
   <section class="view" id="view-progresso">
