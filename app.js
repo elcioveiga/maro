@@ -240,7 +240,9 @@ function renderChallenge(){
         <div class="news-section">Cotidiano</div>
         <div class="headline">${c.post.headline}</div>
         <div class="news-subheadline">Mensagem alerta moradores, mas não apresenta fonte oficial nem confirmação das autoridades.</div>
-        <div class="news-image"><span>Imagem ilustrativa</span></div>
+        <div class="news-image">
+          <img src="images.jpg" alt="Torneira aberta com uma gota de água" loading="lazy">
+        </div>
         <div class="news-caption">Conteúdo compartilhado nas redes sociais; verifique a origem antes de acreditar.</div>
         <div class="meta">${c.post.meta}</div>
       </div>
