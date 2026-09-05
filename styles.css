@@ -222,12 +222,21 @@ p{ color:var(--ink-soft); margin:0 0 12px; }
   padding:26px; display:none;
 }
 .challenge-panel.active{ display:block; }
+.question-session-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:18px; }
+.session-title{ font-family:var(--font-display); font-size:1.1rem; font-weight:700; }
 .chal-progress{ font-family:var(--font-type); font-size:.72rem; color:var(--ink-soft); margin-bottom:10px; }
 .chal-prompt{ font-size:1.05rem; font-weight:600; margin-bottom:16px; }
+.question-label{ font-family:var(--font-type); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--red-deep); margin:20px 0 5px; }
 .mock-post{
   background:#fff; border:1px solid #d9dfe3; border-radius:8px; overflow:hidden; margin-bottom:16px; font-size:.92rem;
   box-shadow:0 10px 25px rgba(24,33,43,.08);
 }
+.question-page{ max-width:780px; margin:0 auto 20px; }
+.question-page .headline{ font-size:1.7rem; margin-top:2px; }
+.question-page .news-subheadline{ font-size:.96rem; }
+.question-page-copy{ padding:15px 20px 12px; color:#3f4c56; font-size:.86rem; line-height:1.55; border-top:1px solid #edf0f2; }
+.news-byline{ padding:0 20px 12px; color:#68737d; font-size:.72rem; font-weight:600; }
+.question-page .meta{ border-top:1px solid #e7eaed; }
 .news-topline{ display:flex; align-items:center; justify-content:space-between; padding:13px 18px 10px; border-bottom:1px solid #e7eaed; }
 .news-brand{ color:#d52b2b; font-family:var(--font-display); font-weight:700; font-size:1.25rem; letter-spacing:-.04em; }
 .news-brand span{ color:#202b35; font-weight:500; }

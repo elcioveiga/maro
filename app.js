@@ -214,10 +214,42 @@ function openLevel(levelId){
   renderChallenge();
 }
 
+function splitQuestion(c){
+  const separator = c.prompt.indexOf('—');
+  if(separator === -1){
+    return {headline:'Informação viral chama atenção nas redes', question:c.prompt};
+  }
+  return {
+    headline:c.prompt.slice(0, separator).trim().replace(/^["“]/, '').replace(/["”]$/, ''),
+    question:c.prompt.slice(separator + 1).trim()
+  };
+}
+
+function renderQuestionPage(c){
+  const section = c.tag || 'Informação em análise';
+  const question = splitQuestion(c);
+  return `
+    <div class="mock-post question-page">
+      <div class="news-topline">
+        <span class="news-brand">notícia<span>agora</span></span>
+        <span class="news-live">Em análise</span>
+      </div>
+      <div class="news-nav">Brasil&nbsp;&nbsp;|&nbsp;&nbsp;Cotidiano&nbsp;&nbsp;|&nbsp;&nbsp;Saúde&nbsp;&nbsp;|&nbsp;&nbsp;Política&nbsp;&nbsp;|&nbsp;&nbsp;Economia</div>
+      <div class="news-section">${section}</div>
+      <div class="headline">${question.headline}</div>
+      <div class="news-subheadline">Publicação circula rapidamente, mas ainda precisa ser conferida na fonte original.</div>
+      <div class="question-page-copy">A equipe de redação reúne o contexto disponível e indica os pontos que precisam de confirmação antes de qualquer conclusão.</div>
+      <div class="news-byline">Da redação · Conteúdo em análise</div>
+      <div class="meta">Publicado hoje · Página simulada para investigação</div>
+    </div>`;
+}
+
 function renderChallenge(){
   const panel = document.getElementById('challenge-panel');
   const list = CHALLENGES[currentLevel];
   const c = list[currentIndex];
+  const question = splitQuestion(c);
+  const hasQuestionPage = c.id === 'l1-1';
   panel.classList.add('active');
   const already = !!state.answered[c.id];
 
@@ -225,7 +257,9 @@ function renderChallenge(){
   if(c.type==='mcq'){
     body = `
       ${c.tag?`<div class="eyebrow">${c.tag}</div>`:''}
-      <div class="chal-prompt">${c.prompt}</div>
+      ${hasQuestionPage ? renderQuestionPage(c) : ''}
+      ${hasQuestionPage ? '<div class="question-label">Pergunta de verificação</div>' : ''}
+      <div class="chal-prompt">${hasQuestionPage ? question.question : c.prompt}</div>
       <div class="opt-list">${c.options.map((o,i)=>`<button class="opt-btn" onclick="answerMcq('${c.id}',${i},${c.correct},this)">${o}</button>`).join('')}</div>
       <div class="feedback-box" id="fb-${c.id}"></div>`;
   } else if(c.type==='signals'){
@@ -280,7 +314,10 @@ function renderChallenge(){
   }
 
   panel.innerHTML = `
-    <div class="chal-progress">NÍVEL ${LEVELS.find(l=>l.id===currentLevel).num} · CASO ${currentIndex+1} DE ${list.length}${already?' · já resolvido':''}</div>
+    <div class="question-session-head">
+      <div class="session-title">Sessão de perguntas</div>
+      <div class="chal-progress">NÍVEL ${LEVELS.find(l=>l.id===currentLevel).num} · CASO ${currentIndex+1} DE ${list.length}${already?' · já resolvido':''}</div>
+    </div>
     ${body}
     <div class="chal-nav"><button class="btn ghost small" onclick="nextChallenge()">Próximo caso →</button></div>`;
 
