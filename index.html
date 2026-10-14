@@ -17,6 +17,7 @@
     <button data-view="inicio" class="active">🏠 Início</button>
     <button data-view="aprender">📚 Aprender</button>
     <button data-view="desafios">🎯 Desafios</button>
+    <button data-view="analisar">🕵️ Analisar</button>
     <button data-view="fontes">🔗 Fontes</button>
     <button data-view="casos">🗂️ Casos Reais</button>
     <button data-view="progresso">🏆 Progresso</button>
@@ -101,6 +102,24 @@
       <li>A própria credibilidade de quem compartilha</li>
       <li>Decisões tomadas com base em dados incorretos</li>
     </ul>
+  </section>
+
+  <section class="view" id="view-analisar">
+    <span class="eyebrow">Laboratório de análise</span>
+    <h2>Analisar uma notícia</h2>
+    <p>Cole o texto de uma notícia ou mensagem suspeita. A IA procura sinais de alerta no texto e o app busca checagens já publicadas por agências. O resultado é um apoio para a sua investigação, não um veredito final.</p>
+
+    <div class="an-box">
+      <textarea id="an-input" maxlength="4000" placeholder="Cole aqui o texto da notícia, do post ou da mensagem encaminhada..."></textarea>
+      <div class="an-foot">
+        <span id="an-count">0 / 4000</span>
+        <button class="btn" id="an-btn" onclick="analyzeNews()">🕵️ Analisar</button>
+      </div>
+    </div>
+
+    <div id="an-result" aria-live="polite"></div>
+
+    <div class="sources-note">A análise é feita por inteligência artificial e pode errar, principalmente com fatos recentes. Para uma conclusão segura, confirme nas agências da <a href="#" onclick="goTo('fontes');return false;">aba Fontes</a>. O texto enviado é processado pelo Google (Gemini).</div>
   </section>
 
   <section class="view" id="view-fontes">
