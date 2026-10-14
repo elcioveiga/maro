@@ -1,7 +1,7 @@
 // Cloudflare Worker — proxy seguro entre o site (GitHub Pages) e as APIs.
 // As chaves ficam como "Secrets" no Cloudflare, nunca no código do site.
 //
-//   AQ.Ab8RN6ICPGQ1uw9g4tPiKn9CaBhAuT5pWX49m9tPC1S1iYrd1Q Variáveis (Settings > Variables and Secrets):
+// Variáveis (Settings > Variables and Secrets):
 //   GEMINI_API_KEY      (Secret, obrigatória)
 //   FACTCHECK_API_KEY   (Secret, opcional — sem ela, só a análise da IA funciona)
 //   ALLOWED_ORIGIN      (Texto) ex.: https://seuusuario.github.io  (vários: separe por vírgula)
