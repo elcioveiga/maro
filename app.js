@@ -506,10 +506,11 @@ Regras importantes:
 - Em "sinais_de_alerta", cite em "trecho" um pedaço CURTO e literal do texto original.
 - "afirmacao_principal": a principal alegação factual em uma frase curta e neutra (máx. 200 caracteres).
 - "o_que_verificar": 2 a 4 passos práticos para o leitor checar por conta própria.
+- "palavras_chave": 3 a 5 palavras-chave curtas (substantivos e nomes próprios, sem verbos) para buscar o assunto em sites de checagem.
 - Escreva em português do Brasil, tom calmo e didático. Seja breve.
 
 Responda SOMENTE com um objeto JSON, sem texto extra, neste formato:
-{"veredito":"parece_confiavel|nao_da_para_confirmar|sinais_de_alerta","resumo":"...","afirmacao_principal":"...","sinais_de_alerta":[{"trecho":"...","explicacao":"..."}],"pontos_positivos":["..."],"o_que_verificar":["..."]}`;
+{"veredito":"parece_confiavel|nao_da_para_confirmar|sinais_de_alerta","resumo":"...","afirmacao_principal":"...","sinais_de_alerta":[{"trecho":"...","explicacao":"..."}],"pontos_positivos":["..."],"o_que_verificar":["..."],"palavras_chave":["..."]}`;
 
 async function analyzeDirect(texto){
   const r = await fetch('https://api.groq.com/openai/v1/chat/completions',{
@@ -537,15 +538,23 @@ async function analyzeDirect(texto){
   d.o_que_verificar = Array.isArray(d.o_que_verificar) ? d.o_que_verificar : [];
   d.checagens = [];
 
-  if(FACTCHECK_KEY && d.afirmacao_principal){
-    try{
-      const u = new URL('https://factchecktools.googleapis.com/v1alpha1/claims:search');
-      u.searchParams.set('query', d.afirmacao_principal);
-      u.searchParams.set('languageCode','pt-BR');
-      u.searchParams.set('pageSize','5');
-      u.searchParams.set('key', FACTCHECK_KEY);
-      const fr = await fetch(u);
-      if(fr.ok){
+  d.checagem_erro = '';
+  if(!FACTCHECK_KEY){
+    d.checagem_erro = 'desligada';
+  }else{
+    const consultas = [];
+    const kw = Array.isArray(d.palavras_chave) ? d.palavras_chave.join(' ').trim() : '';
+    if(kw) consultas.push(kw);
+    if(d.afirmacao_principal) consultas.push(d.afirmacao_principal);
+    for(const q of consultas){
+      try{
+        const u = new URL('https://factchecktools.googleapis.com/v1alpha1/claims:search');
+        u.searchParams.set('query', q);
+        u.searchParams.set('languageCode','pt-BR');
+        u.searchParams.set('pageSize','5');
+        u.searchParams.set('key', FACTCHECK_KEY);
+        const fr = await fetch(u);
+        if(!fr.ok){ d.checagem_erro = 'erro ' + fr.status; break; }
         const fd = await fr.json();
         for(const c of fd.claims||[]){
           for(const rv of c.claimReview||[]){
@@ -553,8 +562,9 @@ async function analyzeDirect(texto){
           }
         }
         d.checagens = d.checagens.slice(0,5);
-      }
-    }catch(e){}
+        if(d.checagens.length) break;
+      }catch(e){ d.checagem_erro = 'sem conexão'; break; }
+    }
   }
   return d;
 }
@@ -636,7 +646,7 @@ function renderAnalysis(d){
 
     <div class="an-block">
       <h4>Checagens publicadas por agências</h4>
-      ${checks || '<p style="margin:0;">Nenhuma checagem encontrada para esta afirmação. Isso não significa que seja verdadeira nem falsa, apenas que nenhuma agência cadastrada tratou dela ainda.</p>'}
+      ${checks || (d.checagem_erro && d.checagem_erro!=='desligada' ? `<p style="margin:0;">Não consegui consultar as agências agora (${escapeHtml(d.checagem_erro)}). Confira a chave do Fact Check no app.js e se a Fact Check Tools API está ativada no Google Cloud.</p>` : '<p style="margin:0;">Nenhuma checagem publicada encontrada. Isso é comum: agências costumam checar boatos virais, e notícias verdadeiras ou muito recentes raramente aparecem aqui. Não significa que seja verdadeira nem falsa.</p>')}
     </div>
 
     ${todo ? `<div class="an-block"><h4>O que verificar agora</h4><ul>${todo}</ul></div>` : ''}`;
